@@ -363,7 +363,7 @@ class Filesystem
                     return false;                    
                 }
             }else{
-                return exec("ln -s ".escapeshellarg($target).' '.escapeshellarg($link)) || true;
+                return exec("ln -s ".escapeshellarg($target).' '.escapeshellarg($link)) !== false;
             }
         }
 
