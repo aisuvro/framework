@@ -351,11 +351,19 @@ class Filesystem
      */
     public function link($target, $link)
     {
+        if (!function_exists('symlink') && !function_exists('link')) {
+            return false;
+        }
+
         if (! windows_os()) {
-            if (function_exists('symlink')) {
-                return symlink($target, $link);
+            if(function_exists('symlink')) {
+                try {
+                    return symlink($target, $link);
+                } catch (ErrorException $e) {
+                    return false;                    
+                }
             }else{
-                return exec("ln -s ".escapeshellarg($target).' '.escapeshellarg($link)) !== false;
+                return exec("ln -s ".escapeshellarg($target).' '.escapeshellarg($link)) || true;
             }
         }
 
